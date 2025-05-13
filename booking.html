@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking | BookKaro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e1e2f;
+            --secondary: #27293d;
+            --accent: #e14eca;
+            --accent-secondary: #1d8cf8;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --bg-gradient: linear-gradient(135deg, #1e1e2f 0%, #27293d 100%);
+            --card-bg: rgba(30, 30, 47, 0.9);
+            --success: #00f2c3;
+            --warning: #ff8d72;
+        }
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+        }
+        .navbar {
+            background: rgba(30, 30, 47, 0.98) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .navbar-brand {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-style: italic;
+            color: var(--accent) !important;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: var(--text-secondary) !important;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: var(--accent) !important;
+            transform: translateY(-1px);
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .seat.selected {
+            background: var(--accent);
+            color: var(--text-primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(225, 78, 202, 0.4);
+        }
+        
+        .seat.occupied {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .seat:not(.occupied):hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+            border: none;
+            padding: 12px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--accent-secondary), var(--accent));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(225, 78, 202, 0.3);
+        }
+
+        .fw-bold {
+            color: var(--text-primary);
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        #seatMap {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        .screen-container {
+            margin-top: 40px;
+        }
+
+        .screen {
+            height: 5px;
+            width: 90%;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+        }
+
+        .screen-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+
+        .seat-container {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="homepage.html">BooKKaro</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="homepage.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="add-event.html">Add Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="return confirmLogout()">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Select Your Seats</h3>
+                <div class="seat-container text-center mb-4">
+                    <div class="d-flex flex-wrap justify-content-center" id="seatMap">
+                    </div>
+                </div>
+                <div class="screen-container text-center mt-4">
+                    <div class="screen"></div>
+                    <p class="screen-text mt-2">SCREEN</p>
+                </div>
+                
+                <div class="seat-info mt-4">
+                    <div class="mb-3">
+                        <span class="fw-bold">Selected Seats:</span>
+                        <span id="selectedSeats" class="ms-2 text-secondary">0</span>
+                    </div>
+                    <div class="mb-4">
+                        <span class="fw-bold">Total Price:</span>
+                        <span id="totalPrice" class="ms-2 text-secondary">₹0</span>
+                    </div>
+                    <a href="payment.html" class="btn btn-primary w-100">Proceed to Payment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const seatMap = document.getElementById('seatMap');
+        let selectedSeats = 0;
+
+        for(let i = 0; i < 64; i++) {
+            const seat = document.createElement('div');
+            seat.className = `seat ${Math.random() < 0.3 ? 'occupied' : ''}`;
+            seat.textContent = i+1;
+            
+            if(!seat.classList.contains('occupied')) {
+                seat.addEventListener('click', () => {
+                    seat.classList.toggle('selected');
+                    selectedSeats = document.querySelectorAll('.seat.selected').length;
+                    document.getElementById('selectedSeats').textContent = selectedSeats;
+                    document.getElementById('totalPrice').textContent = `₹${selectedSeats * 250}`;
+                });
+            }
+            
+            seatMap.appendChild(seat);
+        }
+
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+                return true;
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

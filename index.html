@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BooKKaro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/global.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e1e2f;
+            --secondary: #27293d;
+            --accent: #e14eca;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(30, 30, 47, 0.9);
+        }
+        
+        body {
+            background: rgba(30, 30, 47, 0.6) url('https://dnm.nflximg.net/api/v6/BvVbc2Wxr2w6QuoANoSpJKEIWjQ/AAAAQdHbjrX0uL1mH7uUW7VZ-p5GJOSNNRko_9A_12Mlv5wVYQIDy4nuupxLHxkDj9V0e1OLBs_s8ZlxFkyhPlK5XkrlTK0c7yP42LLinQdYhz8lqfgUcOH68JAbEcY45jG02gCI1NyKVf1lqxsQFmcNN5szbv8.jpg?r=aee');
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-card {
+            background: rgba(30, 30, 47, 0.4);
+            backdrop-filter: blur(16px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(225, 78, 202, 0.2);
+            background: rgba(30, 30, 47, 0.5);
+        }
+
+        .brand-title {
+            color: var(--accent);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(225, 78, 202, 0.2);
+            transform: translateY(-2px);
+        }
+        .form-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .btn-primary {
+            background-color: var(--secondary);
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: white;
+            transition: background-color 0.6s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+        }
+        .signup-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .signup-link a:hover {
+            color: var(--text-primary);
+        }
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .form-control:focus ~ .input-icon {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="login-card p-4">
+                    <h2 class="brand-title with-margin">BooKKaro</h2>
+                    <form onsubmit="return validateLogin(event)">
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div class="signup-link">
+                            Don't have an account? <a href="#">Sign up</a>
+                        </div>
+                    </form>
+                </div>
+            </div></div>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function validateLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+                alert('Please enter a valid email address');
+                return false;
+            } if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return false;
+            }
+            window.location.href = 'homepage.html';
+            return false;
+        }
+    </script>
+</body>
+</html> 
